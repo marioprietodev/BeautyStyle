@@ -1,6 +1,7 @@
 package com.proyectodam.demo.controller;
 
 import com.proyectodam.demo.model.Cliente;
+import com.proyectodam.demo.model.Servicio;
 import com.proyectodam.demo.repository.CitaRepository;
 import com.proyectodam.demo.repository.ClienteRepository;
 import com.proyectodam.demo.repository.ServicioRepository;
@@ -75,5 +76,23 @@ public class ViewController {
 
 
         return "redirect:/cliente-web";
+    }
+    @Transactional
+    @GetMapping("/servicio/eliminar/{id}")
+    public String eliminarServicio (@PathVariable("id")long id){
+        servicioRepository.deleteById(id);
+        return "redirect:/servicio-web";
+    }
+
+    @GetMapping("/servicio/nuevo")
+    public String formularioNuevoServicio(Model model){
+        model.addAttribute("servicio", new Servicio());
+        return "servicio-nuevo";
+
+    }
+    @PostMapping("/servicio/guardar")
+    public String guardarServicio(@ModelAttribute("servicio")Servicio servicio){
+        servicioRepository.save(servicio);
+        return "redirect:/servicio-web";
     }
 }

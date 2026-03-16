@@ -24,6 +24,7 @@
             <th>Descripción</th>
             <th>Precio</th>
             <th>Duración</th>
+            <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -33,6 +34,11 @@
             <td th:text="${s.descripcion}">Descripción</td>
             <td th:text="${s.precio}">Precio</td>
             <td th:text="${s.duracionMin}">Duración(Min)</td>
+            <td>
+                <a th:href="@{/servicio/eliminar/{id}(id=${s.id})}"
+                    onclick="return confirm('Seguro que quieres eliminar el servicio')"
+                    style="color: red; text-decoration: none;">Eliminar</a>
+            </td>
         </tr>
         </tbody>
     </table>
