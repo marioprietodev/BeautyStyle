@@ -23,6 +23,7 @@
             <th>Nombre</th>
             <th>Email</th>
             <th>Teléfono</th>
+            <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -31,6 +32,11 @@
             <td th:text="${c.nombre}">Nombre</td>
             <td th:text="${c.email}">Email</td>
             <td th:text="${c.telefono}">Teléfono</td>
+            <td>
+                <a th:href="@{/cliente/eliminar/{id}(id=${c.id})}"
+                   onclick="return confirm('Seguro que quieres eliminar el cliente')"
+                   style="color: red; text-decoration: none;">Eliminar</a>
+            </td>
         </tr>
         </tbody>
     </table>
