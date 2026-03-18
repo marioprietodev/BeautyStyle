@@ -65,15 +65,16 @@ public class ViewController {
         }
 
     }
-    @Transactional
+
     @GetMapping("/cliente/eliminar/{id}")
-    public String eliminarCliente (@PathVariable("id")long id){
+    public String eliminarCliente (@PathVariable("id")long id, RedirectAttributes flash){
         try {
             clienteRepository.deleteById(id);
-            System.out.println("Cliente borrado con exito");
+            clienteRepository.flush();
+            flash.addFlashAttribute("mensajeSucces","✅ Servicio eliminado correctamente.");
+            return "redirect:/cliente-web";
         } catch (Exception e){
-            e.printStackTrace();
-            System.out.println("No se pudo borrar al cliente");
+            flash.addFlashAttribute("mensajeError","No puedes eliminar un cliente asociado a una cita");
         }
 
 
