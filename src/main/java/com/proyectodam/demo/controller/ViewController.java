@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ViewController {
@@ -78,10 +79,18 @@ public class ViewController {
 
         return "redirect:/cliente-web";
     }
-    @Transactional
+
     @GetMapping("/servicio/eliminar/{id}")
-    public String eliminarServicio (@PathVariable("id")long id){
-        servicioRepository.deleteById(id);
+    public String eliminarServicio (@PathVariable("id")long id, RedirectAttributes flash){
+        try {
+            servicioRepository.deleteById(id);
+            servicioRepository.flush();
+            flash.addFlashAttribute("mensajeSuccess", "✅ Servicio eliminado correctamente.");
+            return "redirect:/servicio-web";
+        } catch (Exception e){
+            flash.addFlashAttribute("mensajeError","No puedes eliminar un servicio asociado a una cita");
+
+        }
         return "redirect:/servicio-web";
     }
 
