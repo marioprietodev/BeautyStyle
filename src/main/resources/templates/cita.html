@@ -24,6 +24,7 @@
             <th>Cliente</th>
             <th>Servicio</th>
             <th>Observaciones</th>
+            <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
@@ -33,6 +34,11 @@
             <td th:text="${ci.cliente.nombre}">Cliente</td>
             <td th:text="${ci.servicio.nombre}">Servicio</td>
             <td th:text="${ci.observaciones}">Observaciones</td>
+            <td>
+                <a th:href="@{/cita/eliminar/{id}(id=${ci.id})}"
+                   onclick="return confirm('Seguro que quieres eliminar la cita')"
+                   style="color:red; text-decoration: none;">Eliminar</a>
+            </td>
         </tr>
         </tbody>
     </table>

@@ -1,5 +1,6 @@
 package com.proyectodam.demo.controller;
 
+import com.proyectodam.demo.model.Cita;
 import com.proyectodam.demo.model.Cliente;
 import com.proyectodam.demo.model.Servicio;
 import com.proyectodam.demo.repository.CitaRepository;
@@ -94,5 +95,24 @@ public class ViewController {
     public String guardarServicio(@ModelAttribute("servicio")Servicio servicio){
         servicioRepository.save(servicio);
         return "redirect:/servicio-web";
+    }
+    @GetMapping("/cita/nuevo")
+    public String formularioNuevaCita(Model model){
+        model.addAttribute("cita", new Cita());
+        model.addAttribute("listaClientes", clienteRepository.findAll());
+        model.addAttribute("listaServicios", servicioRepository.findAll());
+        return "cita-nueva";
+
+    }
+    @PostMapping("/cita/guardar")
+    public String guardarCita(@ModelAttribute("cita")Cita cita){
+        citaRepository.save(cita);
+        return "redirect:/cita-web";
+    }
+    @Transactional
+    @GetMapping("/cita/eliminar/{id}")
+    public String eliminarCita(@PathVariable("id")long id){
+        citaRepository.deleteById(id);
+        return "redirect:/cita-web";
     }
 }
