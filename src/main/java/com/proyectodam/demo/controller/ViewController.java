@@ -125,4 +125,18 @@ public class ViewController {
         citaRepository.deleteById(id);
         return "redirect:/cita-web";
     }
+    @GetMapping("/cliente/editar/{id}")
+    public String formularioEditarCliente(@PathVariable("id")long id, Model model, RedirectAttributes flash){
+        try {
+            Cliente cliente = clienteRepository.findById(id).orElseThrow(() ->
+            new Exception("El cliente con ID"+id+"no se encuentra"));
+            model.addAttribute("cliente",cliente);
+            model.addAttribute("titulo","Editar cliente");
+
+            return "nuevo-cliente";
+        } catch (Exception e){
+            flash.addFlashAttribute("mensajeError","❌ Error al buscar cliente: ");
+            return "redirect:/cliente-web";
+        }
+    }
 }

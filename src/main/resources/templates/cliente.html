@@ -63,6 +63,11 @@
                                 </span>
                         </td>
                         <td class="text-center">
+                            <a th:href="@{/cliente/editar/{id}(id=${c.id})}"
+                               class="btn btn-outline-primary btn-sm me-2">
+                                ✏️ Editar
+                            </a>
+
                             <a th:href="@{/cliente/eliminar/{id}(id=${c.id})}"
                                onclick="return confirm('¿Seguro que quieres eliminar este cliente?')"
                                class="btn btn-outline-danger btn-sm">
