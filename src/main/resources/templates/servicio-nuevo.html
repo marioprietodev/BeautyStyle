@@ -15,6 +15,7 @@
 <div class="card">
     <h2>💖 Registrar Nuevo Servicio</h2>
     <form th:action="@{/servicio/guardar}" th:object="${servicio}" method="post">
+        <input type="hidden" th:field="*{id}">
         <input type="text" th:field="*{nombre}" placeholder="Nombre" required>
         <input type="text" th:field="*{descripcion}" placeholder="Descripción">
         <input type="text" th:field="*{precio}" placeholder="Precio">

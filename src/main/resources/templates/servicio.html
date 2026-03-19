@@ -65,6 +65,10 @@
                             <span class="text-muted"> [[${s.duracionMin}]] min</span>
                         </td>
                         <td class="text-center">
+                            <a th:href="@{/servicio/editar/{id}(id=${s.id})}"
+                               class="btn btn-outline-primary btn-sm me-2">
+                                ✏️ Editar
+                            </a>
                             <a th:href="@{/servicio/eliminar/{id}(id=${s.id})}"
                                onclick="return confirm('¿Seguro que quieres eliminar este servicio?')"
                                class="btn btn-outline-danger btn-sm">

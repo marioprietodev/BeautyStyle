@@ -139,4 +139,18 @@ public class ViewController {
             return "redirect:/cliente-web";
         }
     }
+    @GetMapping("/servicio/editar/{id}")
+    public String formularioEditarServicio(@PathVariable("id")long id, Model model, RedirectAttributes flash){
+        try {
+            Servicio servicio = servicioRepository.findById(id).orElseThrow(() ->
+                    new Exception("El servicio con ID"+id+"no se encuentra"));
+            model.addAttribute("servicio",servicio);
+            model.addAttribute("titulo","Editar servicio");
+
+            return "servicio-nuevo";
+        } catch (Exception e) {
+            flash.addFlashAttribute("mensajeError","❌ Error al buscar cliente");
+            return "redirect:/servicio-web";
+        }
+    }
 }
