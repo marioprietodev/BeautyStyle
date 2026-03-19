@@ -34,32 +34,36 @@ public class ViewController {
     }
 
     @GetMapping("/cliente-web")
-    public String listar(Model model){
-    model.addAttribute("cliente",clienteRepository.findAll());
-    return "cliente";
+    public String listar(Model model) {
+        model.addAttribute("cliente", clienteRepository.findAll());
+        return "cliente";
     }
+
     @GetMapping("/servicio-web")
-    public String listarServicio(Model model){
-        model.addAttribute("servicio",servicioRepository.findAll());
+    public String listarServicio(Model model) {
+        model.addAttribute("servicio", servicioRepository.findAll());
         return "servicio";
     }
+
     @GetMapping("/cita-web")
-    public String listarCita(Model model){
+    public String listarCita(Model model) {
         model.addAttribute("cita", citaRepository.findAll());
         return "cita";
     }
+
     @GetMapping("/cliente-nuevo")
-    public String formularioNuevoCliente(Model model){
-        model.addAttribute("cliente",new Cliente());
+    public String formularioNuevoCliente(Model model) {
+        model.addAttribute("cliente", new Cliente());
         return "nuevo-cliente";
     }
+
     @PostMapping("/cliente-guardar")
-    public String guardarCliente(@ModelAttribute("cliente")Cliente cliente){
+    public String guardarCliente(@ModelAttribute("cliente") Cliente cliente) {
         try {
             System.out.println("Inyectando");
             clienteRepository.save(cliente); //guardamos el cliente en la base de datos
             return "redirect:/cliente-web";
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return "index"; // redirigimos al a tabla para comprobar
         }
@@ -67,14 +71,14 @@ public class ViewController {
     }
 
     @GetMapping("/cliente/eliminar/{id}")
-    public String eliminarCliente (@PathVariable("id")long id, RedirectAttributes flash){
+    public String eliminarCliente(@PathVariable("id") long id, RedirectAttributes flash) {
         try {
             clienteRepository.deleteById(id);
             clienteRepository.flush();
-            flash.addFlashAttribute("mensajeSucces","✅ Servicio eliminado correctamente.");
+            flash.addFlashAttribute("mensajeSucces", "✅ Servicio eliminado correctamente.");
             return "redirect:/cliente-web";
-        } catch (Exception e){
-            flash.addFlashAttribute("mensajeError","No puedes eliminar un cliente asociado a una cita");
+        } catch (Exception e) {
+            flash.addFlashAttribute("mensajeError", "No puedes eliminar un cliente asociado a una cita");
         }
 
 
@@ -82,75 +86,98 @@ public class ViewController {
     }
 
     @GetMapping("/servicio/eliminar/{id}")
-    public String eliminarServicio (@PathVariable("id")long id, RedirectAttributes flash){
+    public String eliminarServicio(@PathVariable("id") long id, RedirectAttributes flash) {
         try {
             servicioRepository.deleteById(id);
             servicioRepository.flush();
             flash.addFlashAttribute("mensajeSuccess", "✅ Servicio eliminado correctamente.");
             return "redirect:/servicio-web";
-        } catch (Exception e){
-            flash.addFlashAttribute("mensajeError","No puedes eliminar un servicio asociado a una cita");
+        } catch (Exception e) {
+            flash.addFlashAttribute("mensajeError", "No puedes eliminar un servicio asociado a una cita");
 
         }
         return "redirect:/servicio-web";
     }
 
     @GetMapping("/servicio/nuevo")
-    public String formularioNuevoServicio(Model model){
+    public String formularioNuevoServicio(Model model) {
         model.addAttribute("servicio", new Servicio());
         return "servicio-nuevo";
 
     }
+
     @PostMapping("/servicio/guardar")
-    public String guardarServicio(@ModelAttribute("servicio")Servicio servicio){
+    public String guardarServicio(@ModelAttribute("servicio") Servicio servicio) {
         servicioRepository.save(servicio);
         return "redirect:/servicio-web";
     }
+
     @GetMapping("/cita/nuevo")
-    public String formularioNuevaCita(Model model){
+    public String formularioNuevaCita(Model model) {
         model.addAttribute("cita", new Cita());
         model.addAttribute("listaClientes", clienteRepository.findAll());
         model.addAttribute("listaServicios", servicioRepository.findAll());
         return "cita-nueva";
 
     }
+
     @PostMapping("/cita/guardar")
-    public String guardarCita(@ModelAttribute("cita")Cita cita){
+    public String guardarCita(@ModelAttribute("cita") Cita cita) {
         citaRepository.save(cita);
         return "redirect:/cita-web";
     }
+
     @Transactional
     @GetMapping("/cita/eliminar/{id}")
-    public String eliminarCita(@PathVariable("id")long id){
+    public String eliminarCita(@PathVariable("id") long id) {
         citaRepository.deleteById(id);
         return "redirect:/cita-web";
     }
+
     @GetMapping("/cliente/editar/{id}")
-    public String formularioEditarCliente(@PathVariable("id")long id, Model model, RedirectAttributes flash){
+    public String formularioEditarCliente(@PathVariable("id") long id, Model model, RedirectAttributes flash) {
         try {
             Cliente cliente = clienteRepository.findById(id).orElseThrow(() ->
-            new Exception("El cliente con ID"+id+"no se encuentra"));
-            model.addAttribute("cliente",cliente);
-            model.addAttribute("titulo","Editar cliente");
+                    new Exception("El cliente con ID" + id + "no se encuentra"));
+            model.addAttribute("cliente", cliente);
+            model.addAttribute("titulo", "Editar cliente");
 
             return "nuevo-cliente";
-        } catch (Exception e){
-            flash.addFlashAttribute("mensajeError","❌ Error al buscar cliente: ");
+        } catch (Exception e) {
+            flash.addFlashAttribute("mensajeError", "❌ Error al buscar cliente: ");
             return "redirect:/cliente-web";
         }
     }
+
     @GetMapping("/servicio/editar/{id}")
-    public String formularioEditarServicio(@PathVariable("id")long id, Model model, RedirectAttributes flash){
+    public String formularioEditarServicio(@PathVariable("id") long id, Model model, RedirectAttributes flash) {
         try {
             Servicio servicio = servicioRepository.findById(id).orElseThrow(() ->
-                    new Exception("El servicio con ID"+id+"no se encuentra"));
-            model.addAttribute("servicio",servicio);
-            model.addAttribute("titulo","Editar servicio");
+                    new Exception("El servicio con ID" + id + "no se encuentra"));
+            model.addAttribute("servicio", servicio);
+            model.addAttribute("titulo", "Editar servicio");
 
             return "servicio-nuevo";
         } catch (Exception e) {
-            flash.addFlashAttribute("mensajeError","❌ Error al buscar cliente");
+            flash.addFlashAttribute("mensajeError", "❌ Error al buscar cliente");
             return "redirect:/servicio-web";
+        }
+    }
+
+    @GetMapping("/cita/editar/{id}")
+    public String formularioEditarCita(@PathVariable("id") long id, Model model, RedirectAttributes flash) {
+        try {
+            model.addAttribute("listaClientes", clienteRepository.findAll());
+            model.addAttribute("listaServicios", servicioRepository.findAll());
+            Cita cita = citaRepository.findById(id).orElseThrow(() ->
+                    new Exception("La cita con ID " + id + " no se encuenttra"));
+            model.addAttribute("cita", cita);
+            model.addAttribute("titulo", "Editar titulo");
+
+            return "cita-nueva";
+        } catch (Exception e){
+            flash.addFlashAttribute("mensajeError","❌ Error al buscar cita");
+            return "redirect:/cita-web";
         }
     }
 }
