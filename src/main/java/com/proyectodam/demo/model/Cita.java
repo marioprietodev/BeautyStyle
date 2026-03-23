@@ -2,6 +2,7 @@ package com.proyectodam.demo.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -57,6 +58,7 @@ public class Cita {
     private long id;
 
     @Column(nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime fechaHora;
 
     @ManyToOne

@@ -180,4 +180,9 @@ public class ViewController {
             return "redirect:/cita-web";
         }
     }
+    @GetMapping("/cita-calendario")
+    public String mostrarCalendario(Model model){
+        model.addAttribute("listaCitas",citaRepository.findAll());
+        return "cita-calendario";
+    }
 }
