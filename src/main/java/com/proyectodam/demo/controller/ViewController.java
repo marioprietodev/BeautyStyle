@@ -122,9 +122,22 @@ public class ViewController {
     }
 
     @PostMapping("/cita/guardar")
-    public String guardarCita(@ModelAttribute("cita") Cita cita) {
+    public String guardarCita(@ModelAttribute("cita") Cita cita, RedirectAttributes flash) {
+        boolean existeChoque;
+        if (cita.getId() == 0) {//cita nueva
+            existeChoque = citaRepository.existsByFechaHora(cita.getFechaHora());
+
+        } else { // cita editada
+            existeChoque = citaRepository.existsByFechaHoraAndIdNot(cita.getFechaHora(), cita.getId());
+        }
+
+        if (existeChoque) {
+            flash.addFlashAttribute("mensajeError", "⚠️ ¡Error! Ya existe una cita agendada para esa fecha y hora.");
+            return "redirect:/cita/nuevo";
+        }
+        flash.addFlashAttribute("mensajeExito", "✅ Cita guardada correctamente");
         citaRepository.save(cita);
-        return "redirect:/cita-web";
+        return "redirect:/cita-calendario";
     }
 
     @Transactional
@@ -175,14 +188,16 @@ public class ViewController {
             model.addAttribute("titulo", "Editar titulo");
 
             return "cita-nueva";
-        } catch (Exception e){
-            flash.addFlashAttribute("mensajeError","❌ Error al buscar cita");
+        } catch (Exception e) {
+            flash.addFlashAttribute("mensajeError", "❌ Error al buscar cita");
             return "redirect:/cita-web";
         }
     }
+
     @GetMapping("/cita-calendario")
-    public String mostrarCalendario(Model model){
-        model.addAttribute("listaCitas",citaRepository.findAll());
+    public String mostrarCalendario(Model model) {
+        model.addAttribute("listaCitas", citaRepository.findAll());
         return "cita-calendario";
     }
 }
+
