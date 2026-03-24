@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>BeautyStyle | Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; height: 100vh; display: flex; align-items: center; }
+        .login-card { max-width: 400px; margin: auto; border-radius: 20px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .btn-pink { background-color: #ff69b4; color: white; font-weight: bold; border: none; }
+        .btn-pink:hover { background-color: #ff4da6; color: white; }
+        .text-pink { color: #ff69b4; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="card login-card p-4">
+        <div class="text-center mb-4">
+            <h2 class="text-pink fw-bold">✨ BeautyStyle</h2>
+            <p class="text-muted">Inicia sesión para gestionar tu agenda</p>
+        </div>
+
+        <div th:if="${param.error}" class="alert alert-danger small py-2">
+            Usuario o contraseña incorrectos.
+        </div>
+
+        <form th:action="@{/login}" method="post">
+            <div class="mb-3">
+                <label class="form-label">Usuario</label>
+                <input type="text" name="username" class="form-control" placeholder="tiffany" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Contraseña</label>
+                <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-pink w-100 py-2 mt-2">Entrar</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
