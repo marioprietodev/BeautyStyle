@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">>
 <head>
     <meta charset="UTF-8">
     <title>BeautyStyle | Clientes</title>
@@ -63,16 +64,19 @@
                                 </span>
                         </td>
                         <td class="text-center">
+                            <div sec:authorize="hasRole('ADMIN')">
                             <a th:href="@{/cliente/editar/{id}(id=${c.id})}"
                                class="btn btn-outline-primary btn-sm me-2">
                                 ✏️ Editar
                             </a>
-
+                            </div>
+                            <div sec:authorize="hasRole('ADMIN')">
                             <a th:href="@{/cliente/eliminar/{id}(id=${c.id})}"
                                onclick="return confirm('¿Seguro que quieres eliminar este cliente?')"
                                class="btn btn-outline-danger btn-sm">
                                 🗑️ Eliminar
                             </a>
+                            </div>
                         </td>
                     </tr>
                     </tbody>
@@ -82,7 +86,9 @@
     </div>
 
     <div class="text-center mt-4 mb-5">
+        <div sec:authorize="hasRole('ADMIN')">
         <a href="/cliente-nuevo" class="btn btn-success shadow px-4">➕ Nuevo Cliente</a>
+        </div>
     </div>
 </div>
 

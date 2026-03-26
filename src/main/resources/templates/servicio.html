@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>BeautyStyle | Servicios</title>
@@ -65,14 +66,18 @@
                             <span class="text-muted"> [[${s.duracionMin}]] min</span>
                         </td>
                         <td class="text-center">
+                            <div sec:authorize="hasRole('ADMIN')">
                             <a th:href="@{/servicio/editar/{id}(id=${s.id})}"
                                class="btn btn-outline-primary btn-sm me-2">
-                                ✏️ Editar
-                            </a>
-                            <a th:href="@{/servicio/eliminar/{id}(id=${s.id})}"
-                               onclick="return confirm('¿Seguro que quieres eliminar este servicio?')"
-                               class="btn btn-outline-danger btn-sm">
-                                🗑️ Eliminar
+                                ✏️ Editar</a>
+                            </div>
+                            <div sec:authorize="hasRole('ADMIN')">
+                                <a th:href="@{/servicio/eliminar/{id}(id=${s.id})}"
+                                   onclick="return confirm('¿Seguro que quieres eliminar este servicio?')"
+                                   class="btn btn-outline-danger btn-sm">
+                                    🗑️ Eliminar</a>
+                            </div>
+
                             </a>
                         </td>
                     </tr>
@@ -83,7 +88,9 @@
     </div>
 
     <div class="text-center mt-4 mb-5">
+        <div sec:authorize="hasRole('ADMIN')">
         <a href="/servicio/nuevo" class="btn btn-info text-white shadow px-4">➕ Añadir Nuevo Servicio</a>
+        </div>
     </div>
 </div>
 

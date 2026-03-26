@@ -1,5 +1,6 @@
 package com.proyectodam.demo.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,17 +8,33 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+
 
 @Configuration
 @EnableWebSecurity
 public class SegurityConfig {
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((requests) -> requests
+        http.userDetailsService(userDetailsService).authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/login").permitAll()
-                        .anyRequest().authenticated()
+
+                        .requestMatchers("/servicio/eliminar/**","/servicio/editar/**").hasRole("ADMIN")
+                        .requestMatchers("/cliente/eliminar/**","/cliente/editar/**").hasRole("ADMIN")
+                        .requestMatchers("/servicio-nuevo", "/cliente-nuevo").hasRole("ADMIN")
+
+                // Los empleados user si podrán ver algunas paginas
+                                .requestMatchers("/","/cita-calendario","/cita/nuevo","/cita/guardar").hasAnyRole("ADMIN","USER")
+                                .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")
@@ -27,16 +44,6 @@ public class SegurityConfig {
                 .logout((logout) -> logout.logoutSuccessUrl("/login?logout").permitAll());
         return http.build();
     }
-        // Creamos un usuario de prueba
-        @Bean
-        public UserDetailsService userDetailsService(){
-            UserDetails user = User.withDefaultPasswordEncoder()
-                    .username("tiffany")
-                    .password("beauty123")
-                    .roles("ADMIN")
-                    .build();
-            return new InMemoryUserDetailsManager(user);
 
-        }
     }
 
