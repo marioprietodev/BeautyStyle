@@ -25,16 +25,19 @@
         <div class="mb-3">
             <label class="form-label fw-bold">Nombre completo</label>
             <input type="text" th:field="*{nombre}" class="form-control" placeholder="Ej: Tiffany Smith" required>
+            <div th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" class ="text-danger small"></div>
         </div>
 
         <div class="mb-3">
             <label class="form-label fw-bold">Email</label>
             <input type="email" th:field="*{email}" class="form-control" placeholder="tiffany@ejemplo.com">
+            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class ="text-danger small"></div>
         </div>
 
         <div class="mb-3">
             <label class="form-label fw-bold">Teléfono</label>
             <input type="text" th:field="*{telefono}" class="form-control" placeholder="600 000 000">
+            <div th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}" class ="text-danger small"></div>
         </div>
 
         <button type="submit" class="btn btn-pink w-100 fw-bold py-2 mt-2">Guardar Cambios</button>

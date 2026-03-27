@@ -1,5 +1,9 @@
 package com.proyectodam.demo.model;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -16,42 +20,13 @@ public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(nullable = false, length = 200)
+   @NotBlank ( message = "El nombre no puede estar vacío")
+   @Size ( min = 3 , max= 100, message = "EL nombre debe tener al menos 3 caracteres")
     private String nombre;
-    @Column(nullable = false, length = 100)
+    @Size ( min = 1, max = 20, message = "El telefono debe ser válido")
     private String telefono;
-    @Column
+    @Email (message = "Debes introducir un email válido")
     private String email;
 
-    public long getId() {
-        return id;
-    }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }

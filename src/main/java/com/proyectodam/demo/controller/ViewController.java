@@ -7,8 +7,10 @@ import com.proyectodam.demo.repository.CitaRepository;
 import com.proyectodam.demo.repository.ClienteRepository;
 import com.proyectodam.demo.repository.ServicioRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,7 +60,10 @@ public class ViewController {
     }
 
     @PostMapping("/cliente-guardar")
-    public String guardarCliente(@ModelAttribute("cliente") Cliente cliente) {
+    public String guardarCliente(@Valid @ModelAttribute("cliente") Cliente cliente, BindingResult result) {
+        if (result.hasErrors()){
+            return "nuevo-cliente";
+        }
         try {
             System.out.println("Inyectando");
             clienteRepository.save(cliente); //guardamos el cliente en la base de datos
