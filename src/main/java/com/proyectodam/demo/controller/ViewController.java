@@ -112,7 +112,10 @@ public class ViewController {
     }
 
     @PostMapping("/servicio/guardar")
-    public String guardarServicio(@ModelAttribute("servicio") Servicio servicio) {
+    public String guardarServicio(@Valid @ModelAttribute("servicio") Servicio servicio,BindingResult result) {
+        if (result.hasErrors()){
+            return "servicio-nuevo";
+        }
         servicioRepository.save(servicio);
         return "redirect:/servicio-web";
     }

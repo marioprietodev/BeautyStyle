@@ -1,8 +1,13 @@
 package com.proyectodam.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 
 // Importamos Entity para asociar tabla en la db
 @Entity
@@ -16,52 +21,17 @@ public class Servicio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false, length = 300)
+    @NotBlank ( message = "El nombre no puede estar en blanco")
+    @Size (min = 2, max = 100, message = "Entre 2 y 100 caracteres")
     private String nombre;
-    @Column(nullable = false, length = 400)
+  @NotBlank (message = "Debe contener una descripción")
     private String descripcion;
-    @Column(nullable = false)
+    @NotNull (message = "No puede estar vacio")
+    @Min(value = 1, message = "El precio debe ser de al menos un euro")
     private double precio;
-    @Column(nullable = false)
+    @NotNull (message = "Indica una duración en minutos")
+    @Min(value = 5, message = "La duracion debe ser de al menos 5 minutos")
     private int duracionMin;
 
-    public long getId() {
-        return id;
-    }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
-
-    public int getDuracionMin() {
-        return duracionMin;
-    }
-
-    public void setDuracionMin(int duracionMin) {
-        this.duracionMin = duracionMin;
-    }
 }
